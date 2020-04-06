@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+
+<body>
+    <div id="app">
+        <!--右击事件，并阻止默认事件发生-->
+        <button v-on:contextmenu.prevent="num++">增加一个</button>
+        <br/>
+        <!--右击事件，不阻止默认事件发生-->
+        <button v-on:contextmenu="decrement($event)">减少一个</button>
+        <br/>
+        <h1>有{{num}}个女神迷恋峰哥</h1>
+    </div>
+</body>
+<script src="node_modules/vue/dist/vue.js" ></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            num: 100
+        },
+        methods: {
+            decrement(ev) {
+                // ev.preventDefault();
+                this.num--;
+            }
+        }
+    })
+</script>
+
+</html>

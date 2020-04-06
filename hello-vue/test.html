@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+
+<body>
+<div id="app">
+    <input type="text" v-model="num">
+    <button v-on:click="num++">点我</button><br/>
+    <button v-on:click="add">增加</button>
+    <h2>{{name}}，非常帅！！！,有{{num}}个女神为他着迷</h2>
+</div>
+<div id="app2">
+    v:text: <span v-text="hello"></span><br/>
+    v:html: <span v-html="hello"></span>
+</div>
+<div id="app3">
+    <input type="checkbox" v-model="language" value="Java">JAVA<br/>
+    <input type="checkbox" v-model="language" value="Php">PHP<br/>
+    <input type="checkbox" v-model="language" value="go">GO
+    <h1>
+        你选择了：{{language.join(',')}}
+    </h1>
+</div>
+<div id="app4">
+    <!--事件中直接写js片段-->
+    <button v-on:click="num++">增加一个</button><br/>
+    <!--事件指定一个回调函数，必须是Vue实例中定义的函数-->
+    <button v-on:click="decrement">减少一个</button><br/>
+    <h1>有{{num}}个女神迷恋超哥</h1>
+</div>
+</body>
+<script src="node_modules/vue/dist/vue.js" ></script>
+<script>
+    // 创建vue实例
+    var app = new Vue({
+        el:"#app", // el即element，该vue实例要渲染的页面元素
+        data:{ // 渲染页面需要的数据
+            name: "超哥",
+            num: 10
+        },
+        methods:{
+            add:function () {
+                // this代表的当前vue实例
+                this.num++;
+            }
+        },
+        created: function () {
+            this.num = 100;
+        }
+    });
+
+    var app2 = new Vue({
+        el: "#app2",
+        data:{
+            hello:"<h1>大家好，我是超哥</h1>"
+        }
+    });
+
+    var app3 = new Vue({
+       el:"#app3",
+       data:{
+           language:[]
+       }
+    });
+
+    var app4 = new Vue({
+        el:"#app4",
+        data:{
+            num:101
+        },
+        methods:{
+            decrement:function () {
+                this.num--;
+            }
+        }
+    })
+
+</script>
+
+</html>
