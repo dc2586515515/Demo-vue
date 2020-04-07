@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+
+<body>
+<div id="app">
+    <!--router-link来指定跳转的路径-->
+    <span><router-link to="/login">登录</router-link></span>
+    <span><router-link to="/register">注册</router-link></span>
+    <hr/>
+    <div>
+        <!--vue-router的锚点-->
+        <router-view></router-view>
+    </div>
+</div>
+<!--
+    1.在<head>中引入js的话，先解析js再加载html,一些js脚本涉及到 DOM 操作的，
+    前提当然是要有对应的 DOM 对象。当你放在 <head> 标签里，这些脚本在 HTML 标签得以解析之前就执行了，
+    此时没有对应的 DOM 对象可以操作，js会失效报错找不到元素。
+
+    2.在<body>中引入js的话，加载html完成后，迅速执行脚本
+-->
+<!--<script src="../dist/build.js"></script>-->
+</body>
+</html>
