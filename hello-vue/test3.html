@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+
+<body>
+<div id="app">
+    <!--可以是数据模型，可以是具有返回值的js代码块或者函数-->
+    <div v-bind:title="title" style="border: 1px solid red; width: 50px; height: 50px;"></div>
+</div>
+
+<div id="app2">
+    <!--绑定class样式-->
+    <div v-bind:class="activeClass"></div>
+    <div v-bind:class="errorClass"></div>
+    <div v-bind:class="[activeClass, errorClass]"></div>
+    <!--绑定style样式-->
+    <div v-bind:style="[baseStyles, overridingStyles]"></div>
+</div>
+<!--计算属性-->
+<div id="app3">
+    <h1>您的生日是：{{birth}} </h1>
+</div>
+<!--watch可以让我们监控一个值的变化。从而做出相应的反应。-->
+<div id="app4">
+    <input type="text" v-model="message">
+</div>
+<!--全局组件。-->
+<div id="app5">
+    <!--使用定义好的全局组件-->
+    <test></test>
+    <!--定义好的组件，可以任意复用多次：-->
+    <test></test>
+    <test></test>
+</div>
+<!--局部组件-->
+<div id="app6">
+    <counter></counter>
+</div>
+</body>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            title: "title",
+        }
+    })
+
+    var app2 = new Vue({
+        el: "#app2",
+        data: {
+            activeClass: 'active',
+            errorClass: ['text-danger', 'text-error'],
+            baseStyles: {'background-color': 'red'},
+            overridingStyles: {border: '1px solid black'}
+        }
+    })
+
+    var app3 = new Vue({
+        el: "#app3",
+        data: {
+            birthday: 1429032123201 // 毫秒值
+        },
+        computed: {
+            birth() {// 计算属性本质是一个方法，但是必须返回结果
+                const d = new Date(this.birthday);
+                return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDay();
+            }
+        }
+    })
+
+    var app4 = new Vue({
+        el: "#app4",
+        data: {
+            message: ""
+        },
+        watch: {
+            message(newVal, oldVal) {
+                console.log(newVal, oldVal);
+            }
+        }
+    })
+
+    // 定义全局组件，两个参数：1，组件名称。2，组件参数
+    Vue.component("test", {
+        template: '<button v-on:click="count++">你点了我 {{ count }} 次，我记住了.</button>',
+        /**组件复用
+         * 你会发现每个组件互不干扰，都有自己的count值。怎么实现的？
+         组件的data属性必须是函数！
+         当我们定义这个 <test> 组件时，它的data 并不是像这样直接提供一个对象：
+         data: {
+          count: 0
+        }
+         取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+         data: function () {
+              return {
+                count: 0
+              }
+        }
+         如果 Vue 没有这条规则，点击一个按钮就会影响到其它所有实例！
+         */
+        data() {
+            return {
+                count: 0
+            }
+        }
+    })
+    var app5 = new Vue({
+        el: "#app5"
+    })
+
+    /**
+     * 一旦全局注册，就意味着即便以后你不再使用这个组件，它依然会随着Vue的加载而加载。
+
+     因此，对于一些并不频繁使用的组件，我们会采用局部注册。
+
+     我们先在外部定义一个对象，结构与创建组件时传递的第二个参数一致：
+     */
+    const counter = {
+        template: '<button v-on:click="count++">你点了我 {{ count }} 次，我记住了.</button>',
+        data() {
+            return {
+                count: 0
+            }
+        }
+    };
+
+    var app6 = new Vue({
+        el: "#app6",
+        components: {
+            counter: counter // 将定义的对象注册为组件
+        }
+    })
+
+</script>
+
+</html>

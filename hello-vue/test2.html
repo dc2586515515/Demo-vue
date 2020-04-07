@@ -6,17 +6,75 @@
 </head>
 
 <body>
-    <div id="app">
-        <!--右击事件，并阻止默认事件发生-->
-        <button v-on:contextmenu.prevent="num++">增加一个</button>
-        <br/>
-        <!--右击事件，不阻止默认事件发生-->
-        <button v-on:contextmenu="decrement($event)">减少一个</button>
-        <br/>
-        <h1>有{{num}}个女神迷恋峰哥</h1>
-    </div>
+<div id="app">
+    <!--右击事件，并阻止默认事件发生-->
+    <button v-on:contextmenu.prevent="num++">增加一个</button>
+    <br/>
+    <!--右击事件，不阻止默认事件发生-->
+    <button v-on:contextmenu="decrement($event)">减少一个</button>
+    <br/>
+    <h1>有{{num}}个人</h1>
+</div>
+
+<div id="app2">
+    <ul>
+        <li v-for="user in users">
+            {{user.name}} - {{user.gender}} - {{user.age}}
+        </li>
+    </ul>
+    <ul>
+        <li v-for="(user,index) in users">
+            {{index+1}}.{{user.name}} - {{user.gender}} - {{user.age}}
+        </li>
+    </ul>
+</div>
+
+<div id="app3">
+    <ul>
+        <li v-for="(value,key,index) in user">
+            {{index + 1}}. {{key}} - {{value}}
+        </li>
+    </ul>
+</div>
+
+<div id="app4">
+    <button v-on:click="show=!show">点击</button>
+    <h1 v-if="show">
+        看到我啦？！
+    </h1>
+    <h1 v-show="show">
+        看到我啦？！show
+    </h1>
+</div>
+
+<div id="app5">
+    <ul>
+        <!--只显示女生-->
+        <li v-for="(user,index) in users" v-show="user.gender=='女'">
+            {{index+1}}. {{user.name}} - {{user.gender}} - {{user.age}}
+        </li>
+    </ul>
+</div>
+
+<div id="app6">
+    <button v-on:click="random=Math.random()">点我呀</button>
+    <span>{{random}}</span>
+    <h1 v-if="random >= 0.75">
+        看到我啦？！if > 0.75
+    </h1>
+    <h1 v-else-if="random > 0.5">
+        看到我啦？！else if > 0.5
+    </h1>
+    <h1 v-else-if="random > 0.25">
+        看到我啦？！else if > 0.25
+    </h1>
+    <h1 v-else>
+        看到我啦？！else
+    </h1>
+</div>
+
 </body>
-<script src="node_modules/vue/dist/vue.js" ></script>
+<script src="node_modules/vue/dist/vue.js"></script>
 <script type="text/javascript">
     var app = new Vue({
         el: "#app",
@@ -28,6 +86,52 @@
                 // ev.preventDefault();
                 this.num--;
             }
+        }
+    })
+
+    var app2 = new Vue({
+        el: "#app2",
+        data: {
+            users: [
+                {name: '柳岩', gender: '女', age: 21},
+                {name: '峰哥', gender: '男', age: 18},
+                {name: '范冰冰', gender: '女', age: 24},
+                {name: '刘亦菲', gender: '女', age: 18},
+                {name: '古力娜扎', gender: '女', age: 25}
+            ]
+        }
+    })
+
+    var app3 = new Vue({
+        el: "#app3",
+        data: {
+            user: {name: '峰哥', gender: '男', age: 18}
+        }
+    })
+
+    var app4 = new Vue({
+        el: "#app4",
+        data: {
+            show: true
+        }
+    })
+    var app5 = new Vue({
+        el: "#app5",
+        data: {
+            users: [
+                {name: '柳岩', gender: '女', age: 21},
+                {name: '峰哥', gender: '男', age: 18},
+                {name: '范冰冰', gender: '女', age: 24},
+                {name: '刘亦菲', gender: '女', age: 18},
+                {name: '古力娜扎', gender: '女', age: 25}
+            ]
+        }
+    })
+
+    var app6 = new Vue({
+        el: "#app6",
+        data: {
+            random: 1
         }
     })
 </script>

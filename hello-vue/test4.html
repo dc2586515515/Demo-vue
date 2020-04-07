@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+
+<body>
+<!--父组件使用子组件，并自定义了title属性：-->
+<div id="app">
+    <h1>打个招呼：</h1>
+    <!--使用子组件，同时传递title属性-->
+    <introduce title="大家好"/>
+</div>
+
+<div id="app2">
+    <h2>传智播客已开设如下课程：</h2>
+    <!-- 使用子组件的同时，传递属性，这里使用了v-bind，指向了父组件自己的属性lessons -->
+    <my-list :items="lessons"/>
+</div>
+
+<!--子向父的通信-->
+<div id="app3">
+    <h2>num: {{num}}</h2>
+    <!--使用子组件的时候，传递num到子组件中-->
+    <counter :count="num" @inc="increment" @dec="decrement"></counter>
+</div>
+
+</body>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    /*全局组件*/
+    Vue.component("introduce", {
+        // 直接使用props接收到的属性来渲染页面
+        template: '<h1>{{title}}</h1>',
+        props: ['title'] // 通过props来接收一个父组件传递的属性
+    })
+    var app = new Vue({
+        el: "#app"
+    })
+
+    /*我们定义一个子组件：*/
+    const myList = {
+        template: '\
+        <ul>\
+        	<li v-for="item in items" :key="item.id">{{item.id}} : {{item.name}}</li>\
+        </ul>\
+        ',
+        props: { // 通过props来接收父组件传递来的属性
+            items: {// 这里定义items属性
+                type: Array,// 要求必须是Array类型
+                default: [] // 如果父组件没有传，那么给定默认值是[]
+            }
+        }
+    }
+
+    var app2 = new Vue({
+        el: "#app2",
+        components: {
+            myList // 当key和value一样时，可以只写一个
+        },
+        data: {
+            lessons: [
+                {id: 1, name: 'java'},
+                {id: 2, name: 'php'},
+                {id: 3, name: 'ios'},
+            ]
+        }
+    })
+
+    /*子向父通信*/
+    Vue.component("counter", {// 子组件，定义了两个按钮，点击数字num会加或减
+        template: '\
+            <div>\
+                <button @click="plus">加</button>  \
+                <button @click="reduce">减</button>  \
+            </div>',
+        props: ['count'],// count是从父组件获取的。
+        methods: {
+            plus() {
+                /*vue提供了一个内置的this.$emit函数，用来调用父组件绑定的函数*/
+                this.$emit("inc");
+            },
+            reduce() {
+                this.$emit("dec");
+            }
+        }
+    })
+    var app3 = new Vue({
+        el: "#app3",
+        data: {
+            num: 0
+        },
+        /**
+         * 子组件接收到父组件属性后，默认是不允许修改的。怎么办？
+         既然只有父组件能修改，那么加和减的操作一定是放在父组件：
+         */
+        methods: {
+            increment() {
+                this.num++;
+            },
+            decrement() {
+                this.num--;
+            }
+        }
+    })
+</script>
+
+</html>
